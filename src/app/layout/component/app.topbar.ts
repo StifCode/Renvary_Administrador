@@ -33,7 +33,8 @@ import { LayoutService } from '../service/layout.service';
                         />
                     </g>
                 </svg>
-                <span>SAKAI</span>
+                <img src="assets/images/R_A.png" alt="logo" />
+                <span>RENVARY</span>
             </a>
         </div>
 
