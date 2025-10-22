@@ -1,37 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
-import { LayoutService } from '../service/layout.service';
-import { AppFooter } from './app.footer';
-import { AppSidebar } from './app.sidebar';
-import { AppTopbar } from './app.topbar';
-import { SidebarComponent } from './sidebar/sidebar.component';
+import { LayoutService } from '../../service/layout.service';
+import { FooterComponent } from '../footer/footer.component';
+import { SidebarComponent } from '../sidebar/sidebar.component';
+import { TopbarComponent } from '../topbar/topbar.component';
 
 @Component({
-    selector: 'app-layout',
-    standalone: true,
-    imports: [CommonModule, AppTopbar,SidebarComponent, RouterModule, AppFooter],
-    template: `<div class="layout-wrapper" [ngClass]="containerClass">
-        <app-topbar></app-topbar>
-        <app-sidebar></app-sidebar>
-        <div class="layout-main-container">
-            <div class="layout-main">
-                <router-outlet></router-outlet>
-            </div>
-            <app-footer></app-footer>
-        </div>
-        <div class="layout-mask animate-fadein"></div>
-    </div> `
+  selector: 'app-layout',
+  standalone: true,
+  imports: [CommonModule, RouterModule, TopbarComponent, SidebarComponent, FooterComponent],
+  templateUrl: './layout.component.html',
+  styleUrl: './layout.component.scss'
 })
-export class AppLayout {
+
+export class LayoutComponent implements OnDestroy {
     overlayMenuOpenSubscription: Subscription;
 
     menuOutsideClickListener: any;
 
-    @ViewChild(AppSidebar) appSidebar!: AppSidebar;
+    @ViewChild(SidebarComponent) appSidebar!: SidebarComponent;
 
-    @ViewChild(AppTopbar) appTopBar!: AppTopbar;
+    @ViewChild(TopbarComponent) appTopBar!: TopbarComponent;
 
     constructor(
         public layoutService: LayoutService,
@@ -57,16 +48,16 @@ export class AppLayout {
         });
     }
 
-    isOutsideClicked(event: MouseEvent) {
-        const sidebarEl = document.querySelector('.layout-sidebar');
-        const topbarEl = document.querySelector('.layout-menu-button');
+    isOutsideClicked(event: MouseEvent): boolean {
+        const sidebarEl = this.appSidebar.el.nativeElement;
+        const topbarMenuButton = document.querySelector('.layout-menu-button');
         const eventTarget = event.target as Node;
 
-        return !(sidebarEl?.isSameNode(eventTarget) || sidebarEl?.contains(eventTarget) || topbarEl?.isSameNode(eventTarget) || topbarEl?.contains(eventTarget));
+        return !(sidebarEl?.isSameNode(eventTarget) || sidebarEl?.contains(eventTarget) || topbarMenuButton?.isSameNode(eventTarget) || topbarMenuButton?.contains(eventTarget));
     }
 
     hideMenu() {
-        this.layoutService.layoutState.update((prev) => ({ ...prev, overlayMenuActive: false, staticMenuMobileActive: false, menuHoverActive: false }));
+        this.layoutService.layoutState.update((prev: any) => ({ ...prev, overlayMenuActive: false, staticMenuMobileActive: false, menuHoverActive: false }));
         if (this.menuOutsideClickListener) {
             this.menuOutsideClickListener();
             this.menuOutsideClickListener = null;
@@ -110,3 +101,4 @@ export class AppLayout {
         }
     }
 }
+
