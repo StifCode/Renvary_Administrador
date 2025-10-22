@@ -1,3 +1,4 @@
+import { style } from '@angular/animations';
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
@@ -16,7 +17,7 @@ import { LayoutService } from '../service/layout.service';
                 <i class="pi pi-bars"></i>
             </button>
             <a class="layout-topbar-logo" routerLink="/">
-                <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         fill-rule="evenodd"
                         clip-rule="evenodd"
@@ -32,9 +33,22 @@ import { LayoutService } from '../service/layout.service';
                             fill="var(--primary-color)"
                         />
                     </g>
-                </svg>
-                <img src="assets/images/R_A.png" alt="logo" />
-                <span>RENVARY</span>
+                </svg> -->
+
+
+                    <style>
+                        .layout-topbar-logo {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        }
+                        .layout-topbar-logo img {
+                            width: 2rem;
+                            height: 2rem;
+                        }
+                    </style>
+                <img class="layout-topbar-logo" src="assets/img/R_A.png" alt="logo" />
+                <span>ENVARY</span>
             </a>
         </div>
 
